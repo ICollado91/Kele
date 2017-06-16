@@ -14,4 +14,10 @@ class Kele
         @user_data = JSON.parse(get_response.body) #user data is now a ruby hash!
     end
     
+    def get_mentor_availability(mentor_id)
+        get_response = self.class.get("/mentors/#{mentor_id}/student_availability", {headers: {authorization: @auth_token}})
+        mentor_sched = JSON.parse(get_response.body)
+        mentor_sched.to_a #mentor availability as a Ruby array
+    end
+    
 end
