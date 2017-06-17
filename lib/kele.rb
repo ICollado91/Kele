@@ -16,8 +16,19 @@ class Kele
     
     def get_mentor_availability(mentor_id)
         get_response = self.class.get("/mentors/#{mentor_id}/student_availability", {headers: {authorization: @auth_token}})
-        mentor_sched = JSON.parse(get_response.body)
-        mentor_sched.to_a #mentor availability as a Ruby array
+        @mentor_sched = JSON.parse(get_response.body)
+        @mentor_sched.to_a #mentor availability as a Ruby array
+    end
+    
+    def get_roadmap(roadmap_id)
+        get_response = self.class.get("/roadmaps/#{roadmap_id}", {headers: { "authorization" => @auth_token }})
+        @roadmap = JSON.parse(get_response.body)
+    end
+    
+    def get_checkpoint(checkpoint_id)
+        get_response = self.class.get("/checkpoints/#{checkpoint_id}", {headers: { "authorization" => @auth_token }})
+        @checkpoint = JSON.parse(get_response.body)
+        puts @checkpoint
     end
     
 end
