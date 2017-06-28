@@ -23,4 +23,24 @@ class Kele
         @mentor_sched = JSON.parse(get_response.body)
         @mentor_sched.to_a #mentor availability as a Ruby array
     end
+    
+    def get_messages(page = nil)
+        puts "#{page} pages"
+        message_threads = Array.new
+        if page == nil
+            get_response = self.class.get("/message_threads/", headers: { "authorization" => @auth_token })
+            message_threads.push(JSON.parse(get_response.body))
+        elsif page > 0
+            get_response = self.class.get("/message_threads/#{page}", body: {page: page}, headers: { "authorization" => @auth_token })
+            message_threads.push(JSON.parse(get_response.body))
+        end
+        message_threads
+    end
+    
+    def create_message(sender_email, recipient_id, subject = "", message)
+        inputs = {body: {user_id: sender_email, recipient_id: recipient_id, subject: subject, "stripped-text": message}, headers: { "authorization" => @auth_token }}
+        post_response = self.class.post("/messages", inputs)
+        raise "There was an error, check your input." if post_response.code != 200
+    end
+    
 end
