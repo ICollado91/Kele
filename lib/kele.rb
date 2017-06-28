@@ -43,4 +43,12 @@ class Kele
         raise "There was an error, check your input." if post_response.code != 200
     end
     
+    def create_submission(checkpoint_id, assignment_branch, assignment_commit_link, comment)
+        post_response = self.class.post("/checkpoint_submissions", body: { "checkpoint_id": checkpoint_id, "assignment_branch": assignment_branch, "assignment_commit_link": assignment_commit_link, "comment": comment }, headers: { "authorization" => @auth_token })
+    end
+    
+    def update_checkpoint(submission_id, assignment_branch, assignment_commit_link, checkpoint_id, comment, enrollment_id )
+        post_response = self.class.put("/checkpoint_submissions/#{submission_id}", body: { "id": submission_id, "assignment_branch": assignment_branch, "assignment_commit_link": assignment_commit_link, "checkpoint_id": checkpoint_id, "comment": comment, "enrollment_id": enrollment_id })
+    end
+    
 end
